@@ -11,61 +11,69 @@ const Form = (props) => {
 
     //create a state for managing the errors form the UI
     const [error, setError] = useState({
-        errorUserName:"",
-        errorUserEmail: "",
-        errorUserAge: ""
+        errorUserName: false,
+        errorUserEmail: false,
+        errorUserAge: false
     });
 
     //create functions that handle the event of the user typing into the form 
     const handleInputEmailChange = (event) => {
         const userEmail = event.target.value;
-        setValuesForm(valuesForm => ({...valuesForm, userEmail}));
-        if(userEmail === ""){
-            let errorUserEmail = "This field is required.";
-            setError(error =>({...error, errorUserEmail}));
-        } 
+        setValuesForm(valuesForm => ({ ...valuesForm, userEmail }));
+        if (userEmail === "") {
+            setError(error => ({ ...error, errorUserEmail: true }));
+        } else {
+            setError(error => ({ ...error, errorUserEmail: false }))
+        }
     }
 
     const handleInputNameChange = (event) => {
         const userName = event.target.value;
-        setValuesForm(valuesForm => ({...valuesForm, userName}));
-        if(userName === ""){
-            let errorUserName = "This field is required.";
-            setError(error =>({...error, errorUserName}));
-        } 
+        setValuesForm(valuesForm => ({ ...valuesForm, userName }));
+        if (userName === "") {
+            setError(error => ({ ...error, errorUserName: true }));
+        } else {
+            setError(error => ({ ...error, errorUserName: false }))
+        }
     }
 
     const handleInputAgeChange = (event) => {
         const userAge = event.target.value;
-        let numUserAge = parseInt(event.target.value);
-        if(numUserAge >= 18 && numUserAge <= 99){
-            setValuesForm(valuesForm => ({...valuesForm, userAge}))
-        } else{
-            let errorUserAge = "Range Error"
-            setError(error =>({...error, errorUserAge}));
+        setValuesForm(valuesForm => ({ ...valuesForm, userAge }))
+        let numUserAge = parseInt(event.target.value || 0);
+        if (numUserAge < 18 || numUserAge > 99) {
+            setError(error => ({ ...error, errorUserAge: true }));
+        } else {
+            setError(error => ({ ...error, errorUserAge: false }))
         }
     }
 
     //create a function to handle the submit of the form to the parent component 
     const onSubmit = (event) => {
         event.preventDefault();
-        if(valuesForm.userEmail === ""){
-            let errorUserEmail = "This field is required.";
-            setError(error =>({...error, errorUserEmail}));
-        }
-        
-        if(valuesForm.userName === ""){
-            let errorUserName = "This field is required.";
-            setError(error =>({...error, errorUserName}));
+        let errorUserEmail, errorUserName, errorUserAge;
+
+        if (valuesForm.userEmail === "") {
+            errorUserEmail = true;
+            setError(error => ({ ...error, errorUserEmail }));
         }
 
-        if(valuesForm.userAge === "Range Error" || valuesForm.userAge === ""){
-            let errorUserAge = "This field is required. And you should be between 18 and 99 years old";
-            setError(error =>({...error, errorUserAge}));
-        } else{
+        if (valuesForm.userName === "") {
+            errorUserName = true;
+            setError(error => ({ ...error, errorUserName }));
+        }
+
+        let numUserAge = parseInt(valuesForm.userAge || 0);
+        if (numUserAge < 18 || numUserAge > 99) {
+            errorUserAge = true;
+            setError(error => ({ ...error, errorUserAge }));
+        }
+        if (!errorUserEmail && !errorUserName && !errorUserAge) {
             props.onSubmit(valuesForm);
         }
-        
+
+
+
 
     };
 
@@ -80,7 +88,7 @@ const Form = (props) => {
                 value={valuesForm.userEmail}
                 onChange={handleInputEmailChange}
             />
-            {error.errorUserEmail !== "" ? <p className="error-message">This field is required</p> : null}
+            {error.errorUserEmail ? <p className="error-message">This field is required</p> : null}
 
             <label>Name</label>
             <input
@@ -91,8 +99,8 @@ const Form = (props) => {
                 value={valuesForm.userName}
                 onChange={handleInputNameChange}
             />
-            {error.errorUserName !== "" ? <p className="error-message">This field is required</p> : null}
-            
+            {error.errorUserName ? <p className="error-message">This field is required</p> : null}
+
             <label>Age</label>
             <input
                 name="age"
@@ -102,8 +110,8 @@ const Form = (props) => {
                 value={valuesForm.userAge}
                 onChange={handleInputAgeChange}
             />
-            {error.errorUserAge === "This field is required. And you should be between 18 and 99 years old" ? <p className="error-message">You should be between 18 and 99 years old to register in our form.</p> : null}
-            
+            {error.errorUserAge ? <p className="error-message">You should be between 18 and 99 years old to register in our form.</p> : null}
+
 
             <input type="submit"
                 style={{ marginTop: '40px' }}
