@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import React, { useState } from "react";
+import Form from './components/Form';
 import './App.css';
 
 function App() {
+
+  // // a state to control if the user is register or not. This allows the parent to control the flow of the application 
+  const [isSubmited, setIsSubmited] = useState(false);
+
+  //sending this function as a prop to the child 
+  const handleOnSubmit = (data) => {
+    setIsSubmited(true);
+    console.log(data);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isSubmited ? 
+      <h1 className="sucess-message"> Sucess! Thank you for registering in our Form </h1> : <Form isSubmited={isSubmited} onSubmit={handleOnSubmit} />}
     </div>
   );
 }
