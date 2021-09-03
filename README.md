@@ -3,7 +3,7 @@
 This is the initial setaup for your project. Please follow this instructuions:
 * Go to your local directory where you want to work in this assessment
 * Create a new branch
-* git clone {https://github.com/Yosolita1978/AssessmentWeek7.git} // Or you can download the zip file, but  be aware that the download process is different and that would probably put the folder in your downloads
+* git clone {https://github.com/Yosolita1978/FormWeek8.git} // Or you can download the zip file, but  be aware that the download process is different and that would probably put the folder in your downloads
 * Make cd to the folder that create the git clone
 * npm install (This installs the required dependencies)
 * npm start (To run the React project)
